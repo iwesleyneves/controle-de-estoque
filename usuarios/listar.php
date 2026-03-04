@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/../config.php';
+require_once BASE_PATH . '/src/usuario_crud.php';
 
+$usuarios = buscarUsuario($conexao); // Chama a função para buscar os usuários do banco de dados
 
 $titulo = "Usuários |";
 require_once BASE_PATH . '/includes/cabecalho.php';
@@ -11,13 +13,13 @@ require_once BASE_PATH . '/includes/cabecalho.php';
 
     
 
-    <p class="text-center my-4">
-        <a href="inserir.php" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Adicionar Novo Usuário</a>
-    </p>
+    <a href="inserir.php" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Adicionar Novo Usuário
+    </a>
 
     <div class="table-responsive">
         <table class="table table-hover align-middle caption-top">
-            <caption>Quantidade de registros: 1</caption>
+            <caption>Quantidade de registros: <?= count($usuarios) ?></caption>
             <thead class="align-middle table-light">
                 <tr>
                     <th>ID</th>
@@ -27,19 +29,24 @@ require_once BASE_PATH . '/includes/cabecalho.php';
                 </tr>
             </thead>
             <tbody>
-                
+                <!-- Loop para exibir os usuários na tabela -->
+                <?php foreach ($usuarios as $usuario) : ?>
                     <tr>
-                        <td>ID do Usuário...</td>
-                        <td>Nome do Usuário...</td>
-                        <td>E-mail do Usuário...</td>
+                        <!-- Exibe os dados do usuário nas colunas da tabela -->
+                        <td><?= $usuario['id'] ?></td>
+                        <td><?= $usuario['nome'] ?></td>
+                        <td><?= $usuario['email'] ?></td>
+                        
                         <td class="text-end">
-                            <a class="btn btn-warning btn-sm" href="editar.php"><i class="bi bi-pencil-square"></i> Editar</a>
+                            <!-- Botão para editar o usuário, passando o ID como parâmetro na URL -->
+                            <a class="btn btn-warning btn-sm" href="editar.php?id=<?= $usuario['id'] ?>"><i class="bi bi-pencil-square"></i> Editar</a>
                         </td>
                         <td class="text-start">
-                            <a class="btn btn-danger btn-sm" href="excluir.php"><i class="bi bi-trash"></i> Excluir</a>
+                            <!-- Botão para excluir o usuário, passando o ID como parâmetro na URL -->
+                            <a class="btn btn-danger btn-sm" href="excluir.php?id=<?= $usuario['id'] ?>"><i class="bi bi-trash"></i> Excluir</a>
                         </td>
                     </tr>
-                
+                <?php endforeach; ?>
             </tbody>
         </table>
     </div>
