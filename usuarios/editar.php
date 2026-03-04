@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $senha = $_POST['senha'];
 
     if(editarUsuario($conexao, $id, $nome, $email, $senha)) {
-        header('Location: listar.php?mensagem=atualizado');
+        header('Location: listar.php?status=atualizado');
         exit();
     } else {
         echo "<div class='alert alert-danger'>Erro ao atualizar o usuário.</div>";
@@ -55,7 +55,7 @@ require_once BASE_PATH . '/includes/cabecalho.php';
     <button class="btn btn-warning my-4" type="submit">
         <i class="bi bi-arrow-clockwise"></i> Salvar Alterações
     </button>
-    <a href="index.php" class="btn btn-light my-4">Cancelar</a>
+    <a href="listar.php" class="btn btn-light my-4">Cancelar</a>
 </form>
 </section>
 

@@ -78,4 +78,21 @@
 
     // Retorna o usuário encontrado no banco de dados como um array associativo
     return $stmt->fetch(PDO::FETCH_ASSOC);
-}
+    }
+
+    // Função para excluir um usuário do banco de dados pelo ID
+    function excluirUsuario($conexao, $id) {
+
+        // Exclui um usuário do banco de dados pelo ID
+        $sql = "DELETE FROM usuarios WHERE id = :id";
+
+        // Prepara e executa a consulta SQL para excluir um usuário do banco de dados pelo ID
+        $stmt = $conexao->prepare($sql);
+
+        // Vincula o valor do ID à consulta SQL para excluir um usuário do banco de dados pelo ID
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+
+        // Executa a consulta SQL para excluir um usuário do banco de dados pelo ID
+        // Retorna o resultado da execução da consulta SQL para excluir um usuário do banco de dados
+        return $stmt->execute();
+    }
