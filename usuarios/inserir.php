@@ -1,5 +1,21 @@
 <?php
 require_once __DIR__ . '/../config.php';
+require_once BASE_PATH . '/src/usuario_crud.php';
+
+// Verifica se o formulário foi submetido via POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nome = $_POST['nome'];
+    $email = $_POST['email'];
+    $senha = $_POST['senha'];
+
+    // Chama a função para inserir um novo usuário no banco de dados
+    if(inserirUsuario($conexao, $nome, $email, $senha)) {
+        header('Location: listar.php?status=sucesso');
+        exit();
+    } else {
+        echo "<div class='alert alert-danger'>Erro ao inserir o usuário.</div>";
+    }
+}
 
 
 $titulo = "Adicionar Usuario |";
