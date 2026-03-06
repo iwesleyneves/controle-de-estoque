@@ -1,6 +1,17 @@
 <?php
 require_once __DIR__ . '/../config.php';
+require_once BASE_PATH . '/src/fornecedor_crud.php';
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nome = $_POST['nome'];
+
+    if (inserirFornecedor($conexao, $nome)) {
+        header('Location: listar.php?status=sucesso');
+        exit();
+    } else {
+        echo "<div class='alert alert-danger'>Erro ao adicionar o fornecedor.</div>";
+    }
+}
 
 $titulo = "Adicionar Fornecedor |";
 require_once BASE_PATH . '/includes/cabecalho.php';

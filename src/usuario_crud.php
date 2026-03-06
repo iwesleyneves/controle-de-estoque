@@ -43,7 +43,7 @@
 
         // Verifica se a senha foi preenchida para decidir se deve atualizar a senha do usuário ou não
         if (!empty($senha)) {
-            $senha = password_hash($senha, PASSWORD_DEFAULT);
+            $hash = password_hash($senha, PASSWORD_DEFAULT);
             $sql .= ", senha = :senha";
         }
 
@@ -52,13 +52,13 @@
 
         // Prepara a consulta SQL para editar um usuário existente no banco de dados
         $consulta = $conexao->prepare($sql);
-        $consulta->bindValue(':id', $id);
+        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
         $consulta->bindValue(':nome', $nome);
         $consulta->bindValue(':email', $email);
 
         // Verifica se a senha foi preenchida para decidir se deve atualizar a senha do usuário ou não
         if (!empty($senha)) {
-            $consulta->bindValue(':senha', $senha);
+            $consulta->bindValue(':senha', $hash);
         }
 
         // Executa a consulta SQL para editar um usuário existente no banco de dados
@@ -67,32 +67,32 @@
     }
 
     // funcao para buscar um usuário específico no banco de dados pelo ID
-    function buscarUsuarioPorId($conexao, $id) {
+    function buscarUsuarioPorId(PDO $conexao, $id) {
     // Busca um usuário específico no banco de dados pelo ID
     $sql = "SELECT * FROM usuarios WHERE id = :id";
     // Prepara e executa a consulta SQL para buscar um usuário específico no banco de dados pelo ID
-    $stmt = $conexao->prepare($sql);
+    $consulta = $conexao->prepare($sql);
     // Vincula o valor do ID à consulta SQL para buscar um usuário específico no banco de dados pelo ID
-    $stmt->bindValue(':id', $id);
-    $stmt->execute();
+    $consulta->bindValue(':id', $id);
+    $consulta->execute();
 
     // Retorna o usuário encontrado no banco de dados como um array associativo
-    return $stmt->fetch(PDO::FETCH_ASSOC);
+    return $consulta->fetch(PDO::FETCH_ASSOC);
     }
 
     // Função para excluir um usuário do banco de dados pelo ID
-    function excluirUsuario($conexao, $id) {
+    function excluirUsuario(PDO $conexao, $id) {
 
         // Exclui um usuário do banco de dados pelo ID
         $sql = "DELETE FROM usuarios WHERE id = :id";
 
         // Prepara e executa a consulta SQL para excluir um usuário do banco de dados pelo ID
-        $stmt = $conexao->prepare($sql);
+        $consulta = $conexao->prepare($sql);
 
         // Vincula o valor do ID à consulta SQL para excluir um usuário do banco de dados pelo ID
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
 
         // Executa a consulta SQL para excluir um usuário do banco de dados pelo ID
         // Retorna o resultado da execução da consulta SQL para excluir um usuário do banco de dados
-        return $stmt->execute();
+        return $consulta->execute();
     }

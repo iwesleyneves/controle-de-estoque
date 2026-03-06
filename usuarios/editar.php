@@ -7,6 +7,7 @@ if (!$id){
     header('Location: lista.php');
     exit;
 }
+
 $dadosUsuario = buscarUsuarioPorId($conexao, $id);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
